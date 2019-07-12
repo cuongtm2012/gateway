@@ -8,5 +8,15 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class FbkConfig {
     @Value("${path.fbk}")
-    private String rv001Path;
+    private String fbkPath;
+
+    @Value("${path.file.type}")
+    private String fbkType;
+
+    @Value("${path.file.header_snd}")
+    private String headerSnd;
+
+    @Value("${path.file.header_vir}")
+    private String headerVir;
+
 }

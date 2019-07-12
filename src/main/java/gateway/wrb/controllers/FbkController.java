@@ -7,7 +7,6 @@ import gateway.wrb.services.FbkFilesService;
 import gateway.wrb.services.HT002Service;
 import gateway.wrb.services.RV001Service;
 import gateway.wrb.services.RV002Service;
-import gateway.wrb.util.DateUtils;
 import gateway.wrb.util.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +40,80 @@ public class FbkController {
     @Autowired
     private FbkConfig fbkConfig;
 
-    @GetMapping(value = "/readFiles")
+    @GetMapping(value = "/all")
     public ResponseEntity<?> readFiles() {
-        System.out.println("--------- START ---------- ::" + DateUtils.getCurrentDate());
+        System.out.println("--------- START ---------- ::" + System.currentTimeMillis());
         List<FbkFilesInfo> fbkList = importFiles();
         if (fbkList.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-        System.out.println("--------- END ---------- ::" + DateUtils.getCurrentDate());
+        System.out.println("--------- END ---------- ::" + System.currentTimeMillis());
         return new ResponseEntity<List<FbkFilesInfo>>(fbkList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/rv001")
+    public ResponseEntity<?> importrv001() {
+        System.out.println("--------- START ---------- ::" + System.currentTimeMillis());
+        List<FbkFilesInfo> rv001Files = new ArrayList<>();
+        String directory = fbkConfig.getFbkPath();
+        List<Map<String, FbkFilesInfo>> fbkFiles = fbkFilesService.getFbkFiles(directory);
+        for (int i = 0; i < fbkFiles.size(); i++) {
+            Map<String, FbkFilesInfo> filesInfoMap = fbkFiles.get(i);
+            FbkFilesInfo rv001Info = filesInfoMap.get(FileType.RV001);
+            if(Validator.validateObject(rv001Info)){
+                rv001Service.importRV001(rv001Info.getFullFbkPath());
+                rv001Files.add(rv001Info);
+            }
+        }
+        if (rv001Files.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        System.out.println("--------- END ---------- ::" + System.currentTimeMillis());
+        return new ResponseEntity<List<FbkFilesInfo>>(rv001Files, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/rv002")
+    public ResponseEntity<?> importrv002() {
+        System.out.println("--------- START ---------- ::" + System.currentTimeMillis());
+        List<FbkFilesInfo> rv002Files = new ArrayList<>();
+        String directory = fbkConfig.getFbkPath();
+        List<Map<String, FbkFilesInfo>> fbkFiles = fbkFilesService.getFbkFiles(directory);
+        for (int i = 0; i < fbkFiles.size(); i++) {
+            Map<String, FbkFilesInfo> filesInfoMap = fbkFiles.get(i);
+            FbkFilesInfo rv002Info = filesInfoMap.get(FileType.RV002);
+            if(Validator.validateObject(rv002Info)){
+                rv002Service.importRV002(rv002Info.getFullFbkPath());
+                rv002Files.add(rv002Info);
+            }
+        }
+        if (rv002Files.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        System.out.println("--------- END ---------- ::" + System.currentTimeMillis());
+        return new ResponseEntity<List<FbkFilesInfo>>(rv002Files, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/ht002")
+    public ResponseEntity<?> importht002() {
+        System.out.println("--------- START ---------- ::" + System.currentTimeMillis());
+        List<FbkFilesInfo> ht002Files = new ArrayList<>();
+        String directory = fbkConfig.getFbkPath();
+        List<Map<String, FbkFilesInfo>> fbkFiles = fbkFilesService.getFbkFiles(directory);
+
+        for (int i = 0; i < fbkFiles.size(); i++) {
+            Map<String, FbkFilesInfo> filesInfoMap = fbkFiles.get(i);
+            FbkFilesInfo ht002FilesInfo = filesInfoMap.get(FileType.HT002);
+            if(Validator.validateObject(ht002FilesInfo)){
+                ht002Service.importHT002(ht002FilesInfo.getFullFbkPath());
+                ht002Files.add(ht002FilesInfo);
+            }
+        }
+
+        if (ht002Files.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        System.out.println("--------- END ---------- ::" + System.currentTimeMillis());
+        return new ResponseEntity<List<FbkFilesInfo>>(ht002Files, HttpStatus.OK);
     }
 
     public List<FbkFilesInfo> importFiles() {
@@ -57,7 +121,7 @@ public class FbkController {
         List<FbkFilesInfo> rv001Files = new ArrayList<>();
         List<FbkFilesInfo> rv002Files = new ArrayList<>();
         List<FbkFilesInfo> ht002Files = new ArrayList<>();
-        String directory = fbkConfig.getRv001Path();
+        String directory = fbkConfig.getFbkPath();
         List<Map<String, FbkFilesInfo>> fbkFiles = fbkFilesService.getFbkFiles(directory);
 
         for (int i = 0; i < fbkFiles.size(); i++) {

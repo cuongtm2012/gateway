@@ -33,7 +33,7 @@ public class FbkFilesServiceImpl implements FbkFilesService {
             FbkFilesInfo fbkFilesInfo = new FbkFilesInfo();
             fbkFilesInfo.setFullFbkPath(fullFileName);
             String fileName = fullFileName.substring(fullFileName.lastIndexOf('/') + 1);
-            if (fileName.startsWith("fbk_snd")) {
+            if (fileName.startsWith(fbkConfig.getHeaderSnd()) && fileName.endsWith(fbkConfig.getFbkType())) {
                 fbkFilesInfo.setFbkName(fileName);
                 String dateTime = convertDateTime(fileName);
 
@@ -50,12 +50,23 @@ public class FbkFilesServiceImpl implements FbkFilesService {
                 Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
                 fbkFilesInfoMap.put(fbkFilesInfo.getFileType(), fbkFilesInfo);
                 listFbkFiles.add(fbkFilesInfoMap);
-            } else {
+            } else if (fileName.startsWith(fbkConfig.getHeaderVir()) && fileName.endsWith(fbkConfig.getFbkType())) {
+                fbkFilesInfo.setFbkName(fileName);
+                String dateTime = fileName.substring(12,20);
+                fbkFilesInfo.setDateTime(dateTime);
+                fbkFilesInfo.setFileType(FileType.RV002);
+
+                // saving to DB
+                fbkFilesRepo.addFbkFile(fbkFilesInfo);
+
+                // add to list FBK
+                Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
+                fbkFilesInfoMap.put(fbkFilesInfo.getFileType(), fbkFilesInfo);
+                listFbkFiles.add(fbkFilesInfoMap);
             }
         }
         return listFbkFiles;
     }
-
 
     private String convertDateTime(String fileName) {
         String dateTime;
@@ -72,20 +83,6 @@ public class FbkFilesServiceImpl implements FbkFilesService {
         return null;
     }
 
-    @Override
-    public void addFbkFile(FbkFilesInfo fbkFilesInfo) {
-
-    }
-
-    @Override
-    public void updateFbkFile(FbkFilesInfo fbkFilesInfo) {
-
-    }
-
-    @Override
-    public void deteleFbkFile(long userId) {
-
-    }
 
     @Override
     public boolean isFbkFileExist(FbkFilesInfo fbkFilesInfo) {

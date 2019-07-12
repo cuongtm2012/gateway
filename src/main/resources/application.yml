@@ -1,5 +1,9 @@
 path:
   fbk: /Users/macos/Downloads/FBK_example_files/test_file
+  file:
+    type: .dat
+    header_snd: fbk_snd
+    header_vir: fbk_vir
 
 rv001:
   length:
