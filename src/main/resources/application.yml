@@ -1,0 +1,69 @@
+path:
+  fbk: /Users/macos/Downloads/FBK_example_files/test_file
+
+rv001:
+  length:
+    msgDscd: 1
+    trnDt: 8
+    trnTm: 6
+    msgNo: 7
+    wdracNo: 25
+    wdrViracNo: 25
+    rcvacNo: 25
+    rcvViracNo: 25
+    rcvacDppeNm: 69
+    curCd: 3
+    wdrAm: 23
+    tobkDscd: 1
+    istDscd: 1
+    inCdAccGb: 1
+    rcvbk1Cd: 8
+    rcvbk2Cd: 8
+    regModCd: 1
+    trnStat: 5
+    trnSrno: 7
+    refNo: 100
+    vractCusNm: 200
+    stsDscd: 2
+
+rv002:
+  length:
+    msgDscd: 1
+    outActNo: 25
+    virActNo: 25
+    virAcNm: 200
+    refNo: 100
+    recCodCd: 2
+    trnAm: 23
+    trnAvlSdt: 8
+    trnAvlEdt: 8
+    trnAvlStm: 6
+    trnAvlEtm: 6
+    trnAvlyn: 1
+    corpRecCompCode: 9
+    filler: 46
+
+ht002:
+  length:
+    msgDscd: 1
+    actNo: 25
+    trnDt: 8
+    trnTm: 6
+    drCr: 1
+    trnAmt: 23
+    trnAfBl: 23
+    brCd: 3
+    chkAmt: 23
+    trnType: 2
+    particular: 210
+    depSeq: 7
+    status: 2
+    channelType: 2
+    trnSrno: 16
+    destAccount: 25
+    recieveName: 69
+    refTxt: 210
+    depRmk: 210
+    trmPrcSrno: 7
+    virActNo: 25
+

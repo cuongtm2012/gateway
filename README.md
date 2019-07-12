@@ -1,1 +1,1 @@
-# spring-boot-mariadb-example
+# Implement gateway for WooriBank
