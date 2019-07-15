@@ -18,5 +18,12 @@ public class FbkFilesInfo implements Serializable {
     private String fbkName;
     private String fullFbkPath;
     private String fileType;
-    private String dateTime;
+    private String trnDt;
+
+    private String coNoS;
+    private String mgscdS;
+    private String recMsgcdS;
+    private String tmsDtS;
+    private String tmsTmS;
+    private String aplDscd;
 }

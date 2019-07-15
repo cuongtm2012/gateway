@@ -13,12 +13,8 @@ public class HT002Info implements Serializable {
     @GeneratedValue
     private Long ht002Id;
 
-    private String msgDscdS;
-    private String trnDtS;
-    private String trnTmS;
-    private String coNoS;
-    private String mgscdS;
-
+    @Column(name="fbkName")
+    private String fbkName;
     @Column(name="msgDscd")
     private String msgDscd;
     @Column(name="actNo")

@@ -6,7 +6,6 @@ import gateway.wrb.domain.FbkFilesInfo;
 import gateway.wrb.repositories.FbkFilesRepo;
 import gateway.wrb.services.FbkFilesService;
 import gateway.wrb.util.FileUtils;
-import gateway.wrb.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +41,9 @@ public class FbkFilesServiceImpl implements FbkFilesService {
                 } else if (fileName.contains(FileType.HT002)) {
                     fbkFilesInfo.setFileType(FileType.HT002);
                 }
-                fbkFilesInfo.setDateTime(dateTime);
+                fbkFilesInfo.setTrnDt(dateTime);
                 // saving to DB
-                fbkFilesRepo.addFbkFile(fbkFilesInfo);
+                //fbkFilesRepo.addFbkFile(fbkFilesInfo);
 
                 // add to list FBK
                 Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
@@ -53,11 +52,11 @@ public class FbkFilesServiceImpl implements FbkFilesService {
             } else if (fileName.startsWith(fbkConfig.getHeaderVir()) && fileName.endsWith(fbkConfig.getFbkType())) {
                 fbkFilesInfo.setFbkName(fileName);
                 String dateTime = fileName.substring(12,20);
-                fbkFilesInfo.setDateTime(dateTime);
+                fbkFilesInfo.setTrnDt(dateTime);
                 fbkFilesInfo.setFileType(FileType.RV002);
 
                 // saving to DB
-                fbkFilesRepo.addFbkFile(fbkFilesInfo);
+                //fbkFilesRepo.addFbkFile(fbkFilesInfo);
 
                 // add to list FBK
                 Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
@@ -71,7 +70,7 @@ public class FbkFilesServiceImpl implements FbkFilesService {
     private String convertDateTime(String fileName) {
         String dateTime;
         try {
-            dateTime = fileName.substring(fileName.lastIndexOf("_") - 1, 8);
+            dateTime = fileName.substring(fileName.lastIndexOf("_") + 1, fileName.lastIndexOf("_") + 9);
         } catch (Exception e) {
             return fileName.substring(fileName.lastIndexOf("_") - 8, fileName.lastIndexOf("_"));
         }
@@ -82,7 +81,6 @@ public class FbkFilesServiceImpl implements FbkFilesService {
     public FbkFilesInfo getFbkFiles(long id) {
         return null;
     }
-
 
     @Override
     public boolean isFbkFileExist(FbkFilesInfo fbkFilesInfo) {

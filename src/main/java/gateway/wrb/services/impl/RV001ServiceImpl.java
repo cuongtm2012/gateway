@@ -5,6 +5,7 @@ import gateway.wrb.config.RV001Config;
 import gateway.wrb.constant.FileType;
 import gateway.wrb.domain.FbkFilesInfo;
 import gateway.wrb.domain.RV001Info;
+import gateway.wrb.repositories.FbkFilesRepo;
 import gateway.wrb.repositories.RV001Repo;
 import gateway.wrb.services.FbkFilesService;
 import gateway.wrb.services.RV001Service;
@@ -22,6 +23,8 @@ import java.util.stream.Stream;
 
 @Service
 public class RV001ServiceImpl implements RV001Service {
+    @Autowired
+    private FbkFilesRepo fbkFilesRepo;
     @Autowired
     private RV001Repo rv001Repo;
     @Autowired
@@ -58,7 +61,13 @@ public class RV001ServiceImpl implements RV001Service {
     }
 
     @Override
-    public void importRV001(String fullPath) {
+    public void importRV001(FbkFilesInfo fbkFilesInfo) {
+        Integer coNoLength = rv001Config.getCoNoLength();
+        Integer mgscdLength = rv001Config.getMgscdLength();
+        Integer recMsgcdLength = rv001Config.getRecMsgcdLength();
+        Integer tmsDtLength = rv001Config.getTmsDtLength();
+        Integer tmsTmLength = rv001Config.getTmsTmLength();
+
         Integer msgDscdLength = rv001Config.getMsgDscdLength();
         Integer trnDtLength = rv001Config.getTrnDtLength();
         Integer trnTmLength = rv001Config.getTrnTmLength();
@@ -82,9 +91,30 @@ public class RV001ServiceImpl implements RV001Service {
         Integer vractCusNmLength = rv001Config.getVractCusNmLength();
         Integer stsDscdLength = rv001Config.getStsDscdLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fullPath))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
             stream.forEach(line -> {
-                if (!line.startsWith(FileType.PREFIX_START) && !line.startsWith(FileType.PREFIX_END)) {
+                if (line.startsWith(FileType.PREFIX_START)){
+                    String msgDscdS = line.substring(0, msgDscdLength);
+                    line = line.substring(msgDscdLength);
+                    String coNo = line.substring(0, coNoLength);
+                    line = line.substring(coNoLength);
+                    String mgscd = line.substring(0, mgscdLength);
+                    line = line.substring(mgscdLength);
+                    String recMsgcd = line.substring(0, recMsgcdLength);
+                    line = line.substring(recMsgcdLength);
+                    String tmsDt = line.substring(0, tmsDtLength);
+                    line = line.substring(tmsDtLength);
+                    String tmsTm = line.substring(0, tmsTmLength);
+                    line = line.substring(tmsTmLength);
+
+                    fbkFilesInfo.setCoNoS(coNo);
+                    fbkFilesInfo.setMgscdS(mgscd);
+                    fbkFilesInfo.setRecMsgcdS(recMsgcd);
+                    fbkFilesInfo.setTmsDtS(tmsDt);
+                    fbkFilesInfo.setTmsTmS(tmsTm);
+                    fbkFilesRepo.addFbkFile(fbkFilesInfo);
+                } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
+
                     String msgDscd = line.substring(0, msgDscdLength);
                     line = line.substring(msgDscdLength);
                     String trnDt = line.substring(0, trnDtLength);
@@ -130,13 +160,14 @@ public class RV001ServiceImpl implements RV001Service {
                     String stsDscd = line.substring(0, stsDscdLength);
                     line = line.substring(stsDscdLength);
 
-                    System.out.println("rv001Path : [" + fullPath + ", msgDscd :" + msgDscd + ", trnDt:" + trnDt + ", trnTm :" + trnTm + ", msgNo :" + msgNo + ", wdracNo:" + wdracNo + ", wdrViracNo:" + wdrViracNo
+                    System.out.println("rv001Path : [" + fbkFilesInfo.getFullFbkPath() + ", msgDscd :" + msgDscd + ", trnDt:" + trnDt + ", trnTm :" + trnTm + ", msgNo :" + msgNo + ", wdracNo:" + wdracNo + ", wdrViracNo:" + wdrViracNo
                             + ", rcvacNo:" + rcvacNo + ", rcvViracNo:" + rcvViracNo + ", rcvacDppeNm:" + rcvacDppeNm + ", curCd:" + curCd + ", wdrAm:" + wdrAm + ", tobkDscd:" + tobkDscd + ", istDscd:" + istDscd
                             + ", inCdAccGb:" + inCdAccGb + ", rcvbk1Cd:" + rcvbk1Cd + ", rcvbk2Cd:" + rcvbk2Cd + ", regModCd:" + regModCd + ", trnStat:" + trnStat + ", trnSrno:" + trnSrno + ", refNo:" + refNo
                             + ", vractCusNm:" + vractCusNm + ", stsDscd:" + stsDscd +"]");
 
                     // save to DB
                     RV001Info rv001Info = new RV001Info();
+                    rv001Info.setFbkName(fbkFilesInfo.getFbkName());
                     rv001Info.setMsgDscd(msgDscd);
                     rv001Info.setTrnDt(trnDt);
                     rv001Info.setTrnTm(trnTm);

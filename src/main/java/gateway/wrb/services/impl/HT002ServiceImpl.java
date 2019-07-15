@@ -2,7 +2,9 @@ package gateway.wrb.services.impl;
 
 import gateway.wrb.config.HT002Config;
 import gateway.wrb.constant.FileType;
+import gateway.wrb.domain.FbkFilesInfo;
 import gateway.wrb.domain.HT002Info;
+import gateway.wrb.repositories.FbkFilesRepo;
 import gateway.wrb.repositories.HT002Repo;
 import gateway.wrb.services.HT002Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class HT002ServiceImpl implements HT002Service {
     @Autowired
     HT002Repo ht002Repo;
 
+    @Autowired
+    FbkFilesRepo fbkFilesRepo;
+
     @Override
     public List<HT002Info> getAllHT002() {
         return null;
@@ -32,7 +37,12 @@ public class HT002ServiceImpl implements HT002Service {
     }
 
     @Override
-    public void importHT002(String fullPath) {
+    public void importHT002(FbkFilesInfo fbkFilesInfo) {
+        Integer tmsDtLength = ht002Config.getTmsDtLength();
+        Integer tmsTmLength = ht002Config.getTmsTmLength();
+        Integer coNoLength = ht002Config.getCoNoLength();
+        Integer mgscdLength = ht002Config.getMgscdLength();
+
         Integer msgDscdLength = ht002Config.getMsgDscdLength();
         Integer actNoLength = ht002Config.getActNoLength();
         Integer trnDtLength = ht002Config.getTrnDtLength();
@@ -55,9 +65,26 @@ public class HT002ServiceImpl implements HT002Service {
         Integer trmPrcSrnoLength = ht002Config.getTrmPrcSrnoLength();
         Integer virActNoLength = ht002Config.getVirActNoLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fullPath))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
             stream.forEach(line -> {
-                if (!line.startsWith(FileType.PREFIX_START) && !line.startsWith(FileType.PREFIX_END)) {
+                if (line.startsWith(FileType.PREFIX_START)) {
+                    String msgDscdS = line.substring(0, msgDscdLength);
+                    line = line.substring(msgDscdLength);
+                    String tmsDt = line.substring(0, tmsDtLength);
+                    line = line.substring(tmsDtLength);
+                    String tmsTm = line.substring(0, tmsTmLength);
+                    line = line.substring(tmsTmLength);
+                    String coNo = line.substring(0, coNoLength);
+                    line = line.substring(coNoLength);
+                    String mgsCd = line.substring(0, mgscdLength);
+                    line = line.substring(mgscdLength);
+
+                    fbkFilesInfo.setTmsDtS(tmsDt);
+                    fbkFilesInfo.setTmsTmS(tmsTm);
+                    fbkFilesInfo.setCoNoS(coNo);
+                    fbkFilesInfo.setMgscdS(mgsCd);
+                    fbkFilesRepo.addFbkFile(fbkFilesInfo);
+                } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
                     String msgDscd = line.substring(0, msgDscdLength);
                     line = line.substring(msgDscdLength);
                     String actNo = line.substring(0, actNoLength);
@@ -101,12 +128,13 @@ public class HT002ServiceImpl implements HT002Service {
                     String virActNo = line.substring(0, virActNoLength);
                     line = line.substring(virActNoLength);
 
-                    System.out.println("ht002Path : [" + fullPath + ", msgDscd :" + msgDscd + ", actNo:" + actNo + ", trnDt :" + trnDt + ", trnTm :" + trnTm + ", drCr:" + drCr + ", trnAmt:" + trnAmt
+                    System.out.println("ht002Path : [" + fbkFilesInfo.getFullFbkPath() + ", msgDscd :" + msgDscd + ", actNo:" + actNo + ", trnDt :" + trnDt + ", trnTm :" + trnTm + ", drCr:" + drCr + ", trnAmt:" + trnAmt
                             + ", trnAfBl:" + trnAfBl + ", brCd:" + brCd + ", chkAmt:" + chkAmt + ", trnType:" + trnType + ", particular:" + particular + ", depSep:" + depSep + ", status:" + status + ", channelType:" + channelType
                             + ", trnSrno:" + trnSrno + ", destAccount:" + destAccount + ", recieveName:" + recieveName + ", refTxt:" + refTxt + ", depRmk:" + depRmk + ", trmPrcSrno:" + trmPrcSrno + ", virActNo:" + virActNo + "]");
 
                     // save to DB
                     HT002Info ht002Info = new HT002Info();
+                    ht002Info.setFbkName(fbkFilesInfo.getFbkName());
                     ht002Info.setMsgDscd(msgDscd);
                     ht002Info.setActNo(actNo);
                     ht002Info.setTrnDt(trnDt);

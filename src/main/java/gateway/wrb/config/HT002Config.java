@@ -6,6 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 @org.springframework.context.annotation.Configuration
 @Getter
 public class HT002Config {
+    @Value("${ht002.length.tmsDt}")
+    private Integer tmsDtLength;
+    @Value("${ht002.length.tmsTm}")
+    private Integer tmsTmLength;
+    @Value("${ht002.length.coNo}")
+    private Integer coNoLength;
+    @Value("${ht002.length.mgscd}")
+    private Integer mgscdLength;
+
     @Value("${ht002.length.msgDscd}")
     private Integer msgDscdLength;
     @Value("${ht002.length.actNo}")

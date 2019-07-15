@@ -10,6 +10,9 @@ public class FbkConfig {
     @Value("${path.fbk}")
     private String fbkPath;
 
+    @Value("${path.fbkbackup}")
+    private String fbkPathBackup;
+
     @Value("${path.file.type}")
     private String fbkType;
 

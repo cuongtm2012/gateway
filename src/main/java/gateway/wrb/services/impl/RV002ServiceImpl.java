@@ -2,7 +2,9 @@ package gateway.wrb.services.impl;
 
 import gateway.wrb.config.RV002Config;
 import gateway.wrb.constant.FileType;
+import gateway.wrb.domain.FbkFilesInfo;
 import gateway.wrb.domain.RV002Info;
+import gateway.wrb.repositories.FbkFilesRepo;
 import gateway.wrb.repositories.RV002Repo;
 import gateway.wrb.services.RV002Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class RV002ServiceImpl implements RV002Service {
     @Autowired
     RV002Repo rv002Repo;
 
+    @Autowired
+    FbkFilesRepo fbkFilesRepo;
+
     @Override
     public List<RV002Info> getAllRV002() {
         return null;
@@ -33,7 +38,11 @@ public class RV002ServiceImpl implements RV002Service {
     }
 
     @Override
-    public void importRV002(String fullPath) {
+    public void importRV002(FbkFilesInfo fbkFilesInfo) {
+        Integer coNoLength = rv002Config.getCoNoLength();
+        Integer aplDscdLength = rv002Config.getAplDscdLength();
+
+        Integer msgDscdLength = rv002Config.getMsgDscdLength();
         Integer outActNoLength = rv002Config.getOutActNoLength();
         Integer virActNoLength = rv002Config.getVirActNoLength();
         Integer virAcNmLength = rv002Config.getVirAcNmLength();
@@ -48,9 +57,22 @@ public class RV002ServiceImpl implements RV002Service {
         Integer corpRecCompCodeLength = rv002Config.getCorpRecCompCodeLength();
         Integer fillerLength = rv002Config.getFillerLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fullPath))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
             stream.forEach(line -> {
-                if (!line.startsWith(FileType.PREFIX_START) && !line.startsWith(FileType.PREFIX_END)) {
+                if(line.startsWith(FileType.PREFIX_START)){
+                    String msgDscd = line.substring(0, msgDscdLength);
+                    line = line.substring(msgDscdLength);
+                    String coNo = line.substring(0, coNoLength);
+                    line = line.substring(coNoLength);
+                    String aplDscd = line.substring(0, aplDscdLength);
+                    line = line.substring(aplDscdLength);
+
+                    fbkFilesInfo.setCoNoS(coNo);
+                    fbkFilesInfo.setAplDscd(aplDscd);
+                    fbkFilesRepo.addFbkFile(fbkFilesInfo);
+                } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
+                    String msgDscd = line.substring(0, msgDscdLength);
+                    line = line.substring(msgDscdLength);
                     String outActNo = line.substring(0, outActNoLength);
                     line = line.substring(outActNoLength);
                     String virActNo = line.substring(0, virActNoLength);
@@ -78,11 +100,12 @@ public class RV002ServiceImpl implements RV002Service {
                     String filler = line.substring(0, fillerLength);
                     line = line.substring(fillerLength);
 
-                    System.out.println("rv002Path : [" + fullPath + ", outActNo :" + outActNo + ", virActNo:" + virActNo + ", virAcNm :" + virAcNm + ", refNo :" + refNo + ", recCodCd:" + recCodCd + ", trnAm:" + trnAm
+                    System.out.println("rv002Path : [" + fbkFilesInfo.getFullFbkPath() + ", outActNo :" + outActNo + ", virActNo:" + virActNo + ", virAcNm :" + virAcNm + ", refNo :" + refNo + ", recCodCd:" + recCodCd + ", trnAm:" + trnAm
                             + ", trnAvlSdt:" + trnAvlSdt + ", trnAvlEdt:" + trnAvlEdt + ", trnAvlStm:" + trnAvlStm + ", trnAvlEtm:" + trnAvlEtm + ", trnAvlYn:" + trnAvlYn + ", corpRecCompCode:" + corpRecCompCode + ", filter:" + filler +"]");
 
                     // save to DB
                     RV002Info rv002Info = new RV002Info();
+                    rv002Info.setFbkName(fbkFilesInfo.getFbkName());
                     rv002Info.setOutActNo(outActNo);
                     rv002Info.setVirActNo(virActNo);
                     rv002Info.setVirAcNm(virAcNm);

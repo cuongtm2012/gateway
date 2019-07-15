@@ -6,5 +6,6 @@ public class FileType {
     public static final String HT002 = "HT002";
 
     public static final String PREFIX_START = "S";
+    public static final String PREFIX_CONTENT = "D";
     public static final String PREFIX_END = "E";
 }

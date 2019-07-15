@@ -13,11 +13,8 @@ public class RV002Info implements Serializable {
     @GeneratedValue
     private Long rv002Id;
 
-    private String msgDscdS;
-    private String coNoS;
-    private String aplDscdS;
-    private String fillerS;
-
+    @Column(name="fbkName")
+    private String fbkName;
     @Column(name="msgDscd")
     private String msgDscd;
     @Column(name="outActNo")

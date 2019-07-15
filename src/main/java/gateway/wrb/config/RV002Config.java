@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 @org.springframework.context.annotation.Configuration
 @Getter
 public class RV002Config {
+    @Value("${rv002.length.coNo}")
+    private Integer coNoLength;
+    @Value("${rv002.length.aplDscd}")
+    private Integer aplDscdLength;
+
     @Value("${rv002.length.msgDscd}")
     private Integer msgDscdLength;
     @Value("${rv002.length.outActNo}")

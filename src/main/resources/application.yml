@@ -1,5 +1,6 @@
 path:
   fbk: /Users/macos/Downloads/FBK_example_files/test_file
+  fbkbackup: /Users/macos/Downloads/FBK_example_files/test_file/Complete/
   file:
     type: .dat
     header_snd: fbk_snd
@@ -7,6 +8,11 @@ path:
 
 rv001:
   length:
+    coNo: 9
+    mgscd: 5
+    recMsgcd: 5
+    tmsDt: 8
+    tmsTm: 6
     msgDscd: 1
     trnDt: 8
     trnTm: 6
@@ -32,6 +38,8 @@ rv001:
 
 rv002:
   length:
+    coNo: 9
+    aplDscd: 5
     msgDscd: 1
     outActNo: 25
     virActNo: 25
@@ -49,6 +57,10 @@ rv002:
 
 ht002:
   length:
+    tmsDt: 8
+    tmsTm: 6
+    coNo: 9
+    mgscd: 5
     msgDscd: 1
     actNo: 25
     trnDt: 8

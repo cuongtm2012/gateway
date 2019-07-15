@@ -6,6 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 @org.springframework.context.annotation.Configuration
 @Getter
 public class RV001Config {
+    @Value("${rv001.length.coNo}")
+    private Integer coNoLength;
+    @Value("${rv001.length.mgscd}")
+    private Integer mgscdLength;
+    @Value("${rv001.length.recMsgcd}")
+    private Integer recMsgcdLength;
+    @Value("${rv001.length.tmsDt}")
+    private Integer tmsDtLength;
+    @Value("${rv001.length.tmsTm}")
+    private Integer tmsTmLength;
+
     @Value("${rv001.length.msgDscd}")
     private Integer msgDscdLength;
     @Value("${rv001.length.trnDt}")
