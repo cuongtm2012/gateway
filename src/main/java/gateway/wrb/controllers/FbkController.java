@@ -170,11 +170,48 @@ public class FbkController {
         return totalFiles;
     }
 
-    /*
+
     @Scheduled(fixedRate = 2000)
-    public void scheduleTaskWithFixedRate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        logger.info("Fixed Rate Task :: Execution Time - {}", formatter.format(LocalDateTime.now()) );
+    public void scheduleFbkFiles() {
+        List<FbkFilesInfo> rv001Files = new ArrayList<>();
+        List<FbkFilesInfo> rv002Files = new ArrayList<>();
+        List<FbkFilesInfo> ht002Files = new ArrayList<>();
+        String directory = fbkConfig.getFbkPath();
+        List<Map<String, FbkFilesInfo>> fbkFiles = fbkFilesService.getFbkFiles(directory);
+
+        for (int i = 0; i < fbkFiles.size(); i++) {
+            Map<String, FbkFilesInfo> filesInfoMap = fbkFiles.get(i);
+
+            FbkFilesInfo rv001Info = filesInfoMap.get(FileType.RV001);
+            if (Validator.validateObject(rv001Info)) {
+                rv001Service.importRV001(rv001Info);
+                rv001Files.add(rv001Info);
+
+                // Copy and Delete
+                FileUtils fileUtils = new FileUtils();
+                fileUtils.moveFile(rv001Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv001Info.getFbkName() + ".bak");
+            }
+
+            FbkFilesInfo rv002Info = filesInfoMap.get(FileType.RV002);
+            if (Validator.validateObject(rv002Info)) {
+                rv002Service.importRV002(rv002Info);
+                rv002Files.add(rv002Info);
+
+                // Copy and Delete
+                FileUtils fileUtils = new FileUtils();
+                fileUtils.moveFile(rv002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv002Info.getFbkName() + ".bak");
+            }
+
+            FbkFilesInfo ht002Info = filesInfoMap.get(FileType.HT002);
+            if (Validator.validateObject(ht002Info)) {
+                ht002Service.importHT002(ht002Info);
+                ht002Files.add(ht002Info);
+
+                // Copy and Delete
+                FileUtils fileUtils = new FileUtils();
+                fileUtils.moveFile(ht002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + ht002Info.getFbkName() + ".bak");
+            }
+        }
     }
-     */
+
 }
