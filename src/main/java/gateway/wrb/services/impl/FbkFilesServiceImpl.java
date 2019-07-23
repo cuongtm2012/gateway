@@ -30,37 +30,37 @@ public class FbkFilesServiceImpl implements FbkFilesService {
         for (int i = 0; i < listByName.size(); i++) {
             String fullFileName = listByName.get(i);
             FbkFilesInfo fbkFilesInfo = new FbkFilesInfo();
-            fbkFilesInfo.setFullFbkPath(fullFileName);
+            fbkFilesInfo.setFullfbkpath(fullFileName);
             String fileName = fullFileName.substring(fullFileName.lastIndexOf('/') + 1);
             if (fileName.startsWith(fbkConfig.getHeaderSnd()) && fileName.endsWith(fbkConfig.getFbkType())) {
-                fbkFilesInfo.setFbkName(fileName);
+                fbkFilesInfo.setFbkname(fileName);
                 String dateTime = convertDateTime(fileName);
 
                 if (fileName.contains(FileType.RV001)) {
-                    fbkFilesInfo.setFileType(FileType.RV001);
+                    fbkFilesInfo.setFiletype(FileType.RV001);
                 } else if (fileName.contains(FileType.HT002)) {
-                    fbkFilesInfo.setFileType(FileType.HT002);
+                    fbkFilesInfo.setFiletype(FileType.HT002);
                 }
-                fbkFilesInfo.setTrnDt(dateTime);
+                fbkFilesInfo.setTrndt(dateTime);
                 // saving to DB
                 //fbkFilesRepo.addFbkFile(fbkFilesInfo);
 
                 // add to list FBK
                 Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
-                fbkFilesInfoMap.put(fbkFilesInfo.getFileType(), fbkFilesInfo);
+                fbkFilesInfoMap.put(fbkFilesInfo.getFiletype(), fbkFilesInfo);
                 listFbkFiles.add(fbkFilesInfoMap);
             } else if (fileName.startsWith(fbkConfig.getHeaderVir()) && fileName.endsWith(fbkConfig.getFbkType())) {
-                fbkFilesInfo.setFbkName(fileName);
+                fbkFilesInfo.setFbkname(fileName);
                 String dateTime = fileName.substring(12,20);
-                fbkFilesInfo.setTrnDt(dateTime);
-                fbkFilesInfo.setFileType(FileType.RV002);
+                fbkFilesInfo.setTrndt(dateTime);
+                fbkFilesInfo.setFiletype(FileType.RV002);
 
                 // saving to DB
                 //fbkFilesRepo.addFbkFile(fbkFilesInfo);
 
                 // add to list FBK
                 Map<String, FbkFilesInfo> fbkFilesInfoMap = new HashMap<>();
-                fbkFilesInfoMap.put(fbkFilesInfo.getFileType(), fbkFilesInfo);
+                fbkFilesInfoMap.put(fbkFilesInfo.getFiletype(), fbkFilesInfo);
                 listFbkFiles.add(fbkFilesInfoMap);
             }
         }

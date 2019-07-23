@@ -14,16 +14,16 @@ import java.io.Serializable;
 public class FbkFilesInfo implements Serializable {
     @Id
     @GeneratedValue
-    private Long fbkId;
-    private String fbkName;
-    private String fullFbkPath;
-    private String fileType;
-    private String trnDt;
+    private Long fbkid;
+    private String fbkname;
+    private String fullfbkpath;
+    private String filetype;
+    private String trndt;
 
-    private String coNoS;
-    private String mgscdS;
-    private String recMsgcdS;
-    private String tmsDtS;
-    private String tmsTmS;
-    private String aplDscd;
+    private String conos;
+    private String mgscds;
+    private String recmsgcds;
+    private String tmsdts;
+    private String tmstms;
+    private String apldscd;
 }

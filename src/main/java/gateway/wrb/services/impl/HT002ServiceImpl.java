@@ -65,7 +65,7 @@ public class HT002ServiceImpl implements HT002Service {
         Integer trmPrcSrnoLength = ht002Config.getTrmPrcSrnoLength();
         Integer virActNoLength = ht002Config.getVirActNoLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullfbkpath()))) {
             stream.forEach(line -> {
                 if (line.startsWith(FileType.PREFIX_START)) {
                     String msgDscdS = line.substring(0, msgDscdLength);
@@ -79,10 +79,10 @@ public class HT002ServiceImpl implements HT002Service {
                     String mgsCd = line.substring(0, mgscdLength);
                     line = line.substring(mgscdLength);
 
-                    fbkFilesInfo.setTmsDtS(tmsDt);
-                    fbkFilesInfo.setTmsTmS(tmsTm);
-                    fbkFilesInfo.setCoNoS(coNo);
-                    fbkFilesInfo.setMgscdS(mgsCd);
+                    fbkFilesInfo.setTmsdts(tmsDt);
+                    fbkFilesInfo.setTmstms(tmsTm);
+                    fbkFilesInfo.setConos(coNo);
+                    fbkFilesInfo.setMgscds(mgsCd);
                     fbkFilesRepo.addFbkFile(fbkFilesInfo);
                 } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
                     String msgDscd = line.substring(0, msgDscdLength);
@@ -128,34 +128,34 @@ public class HT002ServiceImpl implements HT002Service {
                     String virActNo = line.substring(0, virActNoLength);
                     line = line.substring(virActNoLength);
 
-                    System.out.println("ht002Path : [" + fbkFilesInfo.getFullFbkPath() + ", msgDscd :" + msgDscd + ", actNo:" + actNo + ", trnDt :" + trnDt + ", trnTm :" + trnTm + ", drCr:" + drCr + ", trnAmt:" + trnAmt
+                    System.out.println("ht002Path : [" + fbkFilesInfo.getFullfbkpath() + ", msgDscd :" + msgDscd + ", actNo:" + actNo + ", trnDt :" + trnDt + ", trnTm :" + trnTm + ", drCr:" + drCr + ", trnAmt:" + trnAmt
                             + ", trnAfBl:" + trnAfBl + ", brCd:" + brCd + ", chkAmt:" + chkAmt + ", trnType:" + trnType + ", particular:" + particular + ", depSep:" + depSep + ", status:" + status + ", channelType:" + channelType
                             + ", trnSrno:" + trnSrno + ", destAccount:" + destAccount + ", recieveName:" + recieveName + ", refTxt:" + refTxt + ", depRmk:" + depRmk + ", trmPrcSrno:" + trmPrcSrno + ", virActNo:" + virActNo + "]");
 
                     // save to DB
                     HT002Info ht002Info = new HT002Info();
-                    ht002Info.setFbkName(fbkFilesInfo.getFbkName());
-                    ht002Info.setMsgDscd(msgDscd);
-                    ht002Info.setActNo(actNo);
-                    ht002Info.setTrnDt(trnDt);
-                    ht002Info.setTrnTm(trnTm);
-                    ht002Info.setDrCr(drCr);
-                    ht002Info.setTrnAmt(trnAmt);
-                    ht002Info.setTrnAfBl(trnAfBl);
-                    ht002Info.setBrCd(brCd);
-                    ht002Info.setChkAmt(chkAmt);
-                    ht002Info.setTrnType(trnType);
+                    ht002Info.setFbkname(fbkFilesInfo.getFbkname());
+                    ht002Info.setMsgdscd(msgDscd);
+                    ht002Info.setActno(actNo);
+                    ht002Info.setTrndt(trnDt);
+                    ht002Info.setTrntm(trnTm);
+                    ht002Info.setDrcr(drCr);
+                    ht002Info.setTrnamt(trnAmt);
+                    ht002Info.setTrnafbl(trnAfBl);
+                    ht002Info.setBrcd(brCd);
+                    ht002Info.setChkamt(chkAmt);
+                    ht002Info.setTrntype(trnType);
                     ht002Info.setParticular(particular);
-                    ht002Info.setDepSeq(depSep);
+                    ht002Info.setDepseq(depSep);
                     ht002Info.setStatus(status);
-                    ht002Info.setChannelType(channelType);
-                    ht002Info.setTrnSrno(trnSrno);
-                    ht002Info.setDestAccount(destAccount);
-                    ht002Info.setRecieveName(recieveName);
-                    ht002Info.setRefTxt(refTxt);
-                    ht002Info.setDepRmk(depRmk);
-                    ht002Info.setTrmPrcSrno(trmPrcSrno);
-                    ht002Info.setVirActNo(virActNo);
+                    ht002Info.setChanneltype(channelType);
+                    ht002Info.setTrnsrno(trnSrno);
+                    ht002Info.setDestaccount(destAccount);
+                    ht002Info.setRecievename(recieveName);
+                    ht002Info.setReftxt(refTxt);
+                    ht002Info.setDeprmk(depRmk);
+                    ht002Info.setTrmprcsrno(trmPrcSrno);
+                    ht002Info.setViractno(virActNo);
                     ht002Repo.addHT002(ht002Info);
                 }
             });

@@ -21,8 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +71,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(rv001Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv001Info.getFbkName() + ".bak");
+                fileUtils.moveFile(rv001Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + rv001Info.getFbkname() + ".bak");
             }
         }
         if (rv001Files.isEmpty()) {
@@ -98,7 +96,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(rv002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv002Info.getFbkName() + ".bak");
+                fileUtils.moveFile(rv002Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + rv002Info.getFbkname() + ".bak");
             }
         }
         if (rv002Files.isEmpty()) {
@@ -124,7 +122,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(ht002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + ht002Info.getFbkName() + ".bak");
+                fileUtils.moveFile(ht002Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + ht002Info.getFbkname() + ".bak");
             }
         }
 
@@ -189,7 +187,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(rv001Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv001Info.getFbkName() + ".bak");
+                fileUtils.moveFile(rv001Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + rv001Info.getFbkname() + ".bak");
             }
 
             FbkFilesInfo rv002Info = filesInfoMap.get(FileType.RV002);
@@ -199,7 +197,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(rv002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + rv002Info.getFbkName() + ".bak");
+                fileUtils.moveFile(rv002Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + rv002Info.getFbkname() + ".bak");
             }
 
             FbkFilesInfo ht002Info = filesInfoMap.get(FileType.HT002);
@@ -209,7 +207,7 @@ public class FbkController {
 
                 // Copy and Delete
                 FileUtils fileUtils = new FileUtils();
-                fileUtils.moveFile(ht002Info.getFullFbkPath(), fbkConfig.getFbkPathBackup() + ht002Info.getFbkName() + ".bak");
+                fileUtils.moveFile(ht002Info.getFullfbkpath(), fbkConfig.getFbkPathBackup() + ht002Info.getFbkname() + ".bak");
             }
         }
     }

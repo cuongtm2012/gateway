@@ -9,16 +9,13 @@ import gateway.wrb.repositories.FbkFilesRepo;
 import gateway.wrb.repositories.RV001Repo;
 import gateway.wrb.services.FbkFilesService;
 import gateway.wrb.services.RV001Service;
-import gateway.wrb.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -57,7 +54,7 @@ public class RV001ServiceImpl implements RV001Service {
 
     @Override
     public boolean isRV001exist(RV001Info rv001) {
-        return rv001Repo.isRV001Exist(rv001.getMsgDscd(), rv001.getTrnDt(), rv001.getTrnTm(), rv001.getMsgNo(), rv001.getWdracNo(), rv001.getRcvacNo(), rv001.getWdrAm());
+        return rv001Repo.isRV001Exist(rv001.getMsgdscd(), rv001.getTrndt(), rv001.getTrntm(), rv001.getMsgno(), rv001.getWdracno(), rv001.getRcvacno(), rv001.getWdram());
     }
 
     @Override
@@ -91,7 +88,7 @@ public class RV001ServiceImpl implements RV001Service {
         Integer vractCusNmLength = rv001Config.getVractCusNmLength();
         Integer stsDscdLength = rv001Config.getStsDscdLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullfbkpath()))) {
             stream.forEach(line -> {
                 if (line.startsWith(FileType.PREFIX_START)){
                     String msgDscdS = line.substring(0, msgDscdLength);
@@ -107,11 +104,11 @@ public class RV001ServiceImpl implements RV001Service {
                     String tmsTm = line.substring(0, tmsTmLength);
                     line = line.substring(tmsTmLength);
 
-                    fbkFilesInfo.setCoNoS(coNo);
-                    fbkFilesInfo.setMgscdS(mgscd);
-                    fbkFilesInfo.setRecMsgcdS(recMsgcd);
-                    fbkFilesInfo.setTmsDtS(tmsDt);
-                    fbkFilesInfo.setTmsTmS(tmsTm);
+                    fbkFilesInfo.setConos(coNo);
+                    fbkFilesInfo.setMgscds(mgscd);
+                    fbkFilesInfo.setRecmsgcds(recMsgcd);
+                    fbkFilesInfo.setTmsdts(tmsDt);
+                    fbkFilesInfo.setTmstms(tmsTm);
                     fbkFilesRepo.addFbkFile(fbkFilesInfo);
                 } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
 
@@ -160,36 +157,36 @@ public class RV001ServiceImpl implements RV001Service {
                     String stsDscd = line.substring(0, stsDscdLength);
                     line = line.substring(stsDscdLength);
 
-                    System.out.println("rv001Path : [" + fbkFilesInfo.getFullFbkPath() + ", msgDscd :" + msgDscd + ", trnDt:" + trnDt + ", trnTm :" + trnTm + ", msgNo :" + msgNo + ", wdracNo:" + wdracNo + ", wdrViracNo:" + wdrViracNo
+                    System.out.println("rv001Path : [" + fbkFilesInfo.getFullfbkpath() + ", msgDscd :" + msgDscd + ", trnDt:" + trnDt + ", trnTm :" + trnTm + ", msgNo :" + msgNo + ", wdracNo:" + wdracNo + ", wdrViracNo:" + wdrViracNo
                             + ", rcvacNo:" + rcvacNo + ", rcvViracNo:" + rcvViracNo + ", rcvacDppeNm:" + rcvacDppeNm + ", curCd:" + curCd + ", wdrAm:" + wdrAm + ", tobkDscd:" + tobkDscd + ", istDscd:" + istDscd
                             + ", inCdAccGb:" + inCdAccGb + ", rcvbk1Cd:" + rcvbk1Cd + ", rcvbk2Cd:" + rcvbk2Cd + ", regModCd:" + regModCd + ", trnStat:" + trnStat + ", trnSrno:" + trnSrno + ", refNo:" + refNo
                             + ", vractCusNm:" + vractCusNm + ", stsDscd:" + stsDscd +"]");
 
                     // save to DB
                     RV001Info rv001Info = new RV001Info();
-                    rv001Info.setFbkName(fbkFilesInfo.getFbkName());
-                    rv001Info.setMsgDscd(msgDscd);
-                    rv001Info.setTrnDt(trnDt);
-                    rv001Info.setTrnTm(trnTm);
-                    rv001Info.setMsgNo(msgNo);
-                    rv001Info.setWdracNo(wdracNo);
-                    rv001Info.setWdrViracNo(wdrViracNo);
-                    rv001Info.setRcvacNo(rcvacNo);
-                    rv001Info.setRcvViracNo(rcvViracNo);
-                    rv001Info.setRcvacDppeNm(rcvacDppeNm);
-                    rv001Info.setCurCd(curCd);
-                    rv001Info.setWdrAm(wdrAm);
-                    rv001Info.setTobkDscd(tobkDscd);
-                    rv001Info.setIstDscd(istDscd);
-                    rv001Info.setInCdAccGb(inCdAccGb);
-                    rv001Info.setRcvbk1Cd(rcvbk1Cd);
-                    rv001Info.setRcvbk2Cd(rcvbk2Cd);
-                    rv001Info.setRegModCd(regModCd);
-                    rv001Info.setTrnStat(trnStat);
-                    rv001Info.setTrnSrno(trnSrno);
-                    rv001Info.setRefNo(refNo);
-                    rv001Info.setVractCusNm(vractCusNm);
-                    rv001Info.setStsDscd(stsDscd);
+                    rv001Info.setFbkname(fbkFilesInfo.getFbkname());
+                    rv001Info.setMsgdscd(msgDscd);
+                    rv001Info.setTrndt(trnDt);
+                    rv001Info.setTrntm(trnTm);
+                    rv001Info.setMsgno(msgNo);
+                    rv001Info.setWdracno(wdracNo);
+                    rv001Info.setWdrviracno(wdrViracNo);
+                    rv001Info.setRcvacno(rcvacNo);
+                    rv001Info.setRcvviracno(rcvViracNo);
+                    rv001Info.setRcvacdppenm(rcvacDppeNm);
+                    rv001Info.setCurcd(curCd);
+                    rv001Info.setWdram(wdrAm);
+                    rv001Info.setTobkdscd(tobkDscd);
+                    rv001Info.setIstdscd(istDscd);
+                    rv001Info.setIncdaccgb(inCdAccGb);
+                    rv001Info.setRcvbk1cd(rcvbk1Cd);
+                    rv001Info.setRcvbk2cd(rcvbk2Cd);
+                    rv001Info.setRegmodcd(regModCd);
+                    rv001Info.setTrnstat(trnStat);
+                    rv001Info.setTrnsrno(trnSrno);
+                    rv001Info.setRefno(refNo);
+                    rv001Info.setVractcusnm(vractCusNm);
+                    rv001Info.setStsdscd(stsDscd);
                     rv001Repo.addRV001(rv001Info);
                 }
             });

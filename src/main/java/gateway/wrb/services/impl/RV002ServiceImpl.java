@@ -57,7 +57,7 @@ public class RV002ServiceImpl implements RV002Service {
         Integer corpRecCompCodeLength = rv002Config.getCorpRecCompCodeLength();
         Integer fillerLength = rv002Config.getFillerLength();
 
-        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullFbkPath()))) {
+        try (Stream<String> stream = Files.lines(Paths.get(fbkFilesInfo.getFullfbkpath()))) {
             stream.forEach(line -> {
                 if(line.startsWith(FileType.PREFIX_START)){
                     String msgDscd = line.substring(0, msgDscdLength);
@@ -67,8 +67,8 @@ public class RV002ServiceImpl implements RV002Service {
                     String aplDscd = line.substring(0, aplDscdLength);
                     line = line.substring(aplDscdLength);
 
-                    fbkFilesInfo.setCoNoS(coNo);
-                    fbkFilesInfo.setAplDscd(aplDscd);
+                    fbkFilesInfo.setConos(coNo);
+                    fbkFilesInfo.setApldscd(aplDscd);
                     fbkFilesRepo.addFbkFile(fbkFilesInfo);
                 } else if (line.startsWith(FileType.PREFIX_CONTENT)) {
                     String msgDscd = line.substring(0, msgDscdLength);
@@ -100,24 +100,24 @@ public class RV002ServiceImpl implements RV002Service {
                     String filler = line.substring(0, fillerLength);
                     line = line.substring(fillerLength);
 
-                    System.out.println("rv002Path : [" + fbkFilesInfo.getFullFbkPath() + ", outActNo :" + outActNo + ", virActNo:" + virActNo + ", virAcNm :" + virAcNm + ", refNo :" + refNo + ", recCodCd:" + recCodCd + ", trnAm:" + trnAm
+                    System.out.println("rv002Path : [" + fbkFilesInfo.getFullfbkpath() + ", outActNo :" + outActNo + ", virActNo:" + virActNo + ", virAcNm :" + virAcNm + ", refNo :" + refNo + ", recCodCd:" + recCodCd + ", trnAm:" + trnAm
                             + ", trnAvlSdt:" + trnAvlSdt + ", trnAvlEdt:" + trnAvlEdt + ", trnAvlStm:" + trnAvlStm + ", trnAvlEtm:" + trnAvlEtm + ", trnAvlYn:" + trnAvlYn + ", corpRecCompCode:" + corpRecCompCode + ", filter:" + filler +"]");
 
                     // save to DB
                     RV002Info rv002Info = new RV002Info();
-                    rv002Info.setFbkName(fbkFilesInfo.getFbkName());
-                    rv002Info.setOutActNo(outActNo);
-                    rv002Info.setVirActNo(virActNo);
-                    rv002Info.setVirAcNm(virAcNm);
-                    rv002Info.setRefNo(refNo);
-                    rv002Info.setRecCodCd(recCodCd);
-                    rv002Info.setTrnAm(trnAm);
-                    rv002Info.setTrnAvlSdt(trnAvlSdt);
-                    rv002Info.setTrnAvlEdt(trnAvlEdt);
-                    rv002Info.setTrnAvlStm(trnAvlStm);
-                    rv002Info.setTrnAvlEtm(trnAvlEtm);
-                    rv002Info.setTrnAvlyn(trnAvlYn);
-                    rv002Info.setCorpRecCompCode(corpRecCompCode);
+                    rv002Info.setFbkname(fbkFilesInfo.getFbkname());
+                    rv002Info.setOutactno(outActNo);
+                    rv002Info.setViractno(virActNo);
+                    rv002Info.setViracnm(virAcNm);
+                    rv002Info.setRefno(refNo);
+                    rv002Info.setReccodcd(recCodCd);
+                    rv002Info.setTrnam(trnAm);
+                    rv002Info.setTrnavlsdt(trnAvlSdt);
+                    rv002Info.setTrnavledt(trnAvlEdt);
+                    rv002Info.setTrnavlstm(trnAvlStm);
+                    rv002Info.setTrnavletm(trnAvlEtm);
+                    rv002Info.setTrnavlyn(trnAvlYn);
+                    rv002Info.setCorpreccompcode(corpRecCompCode);
                     rv002Info.setFilter(filler);
                     rv002Repo.addRV002(rv002Info);
                 }

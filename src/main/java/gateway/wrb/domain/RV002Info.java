@@ -11,42 +11,27 @@ import java.io.Serializable;
 public class RV002Info implements Serializable {
     @Id
     @GeneratedValue
-    private Long rv002Id;
+    private Long rv002id;
 
-    @Column(name="fbkName")
-    private String fbkName;
-    @Column(name="msgDscd")
-    private String msgDscd;
-    @Column(name="outActNo")
-    private String outActNo;
-    @Column(name="virActNo")
-    private String virActNo;
-    @Column(name="virAcNm")
-    private String virAcNm;
-    @Column(name="refNo")
-    private String refNo;
-    @Column(name="recCodCd")
-    private String recCodCd;
-    @Column(name="trnAm")
-    private String trnAm;
-    @Column(name="trnAvlSdt")
-    private String trnAvlSdt;
-    @Column(name="trnAvlEdt")
-    private String trnAvlEdt;
-    @Column(name="trnAvlStm")
-    private String trnAvlStm;
-    @Column(name="trnAvlEtm")
-    private String trnAvlEtm;
-    @Column(name="trnAvlyn")
-    private String trnAvlyn;
-    @Column(name="corpRecCompCode")
-    private String corpRecCompCode;
-    @Column(name="filter")
+    private String fbkname;
+    private String msgdscd;
+    private String outactno;
+    private String viractno;
+    private String viracnm;
+    private String refno;
+    private String reccodcd;
+    private String trnam;
+    private String trnavlsdt;
+    private String trnavledt;
+    private String trnavlstm;
+    private String trnavletm;
+    private String trnavlyn;
+    private String corpreccompcode;
     private String filter;
 
-    private String msgDscdE;
-    private String totCntE;
-    private String totReqCntE;
-    private String totReqAmtE;
-    private String fillerE;
+    private String msgdscde;
+    private String totcnte;
+    private String totreqcnte;
+    private String totreqamte;
+    private String fillere;
 }
